@@ -120,7 +120,7 @@ interaction.add(cfg, 'autoRotate').onChange(u('autoRotate'))
 interaction.add(cfg, 'autoRotateSpeed', 0, 1, 0.01).onChange(u('autoRotateSpeed'))
 interaction.add(cfg, 'hoverTilt', 0, 0.5, 0.01).onChange(u('hoverTilt'))
 
-const SCRIPT_URL = 'https://cdn.jsdelivr.net/gh/codeandwander/3d-book@v0.1.0/dist-embed/book.iife.js'
+const SCRIPT_URL = 'https://cdn.jsdelivr.net/gh/codeandwander/3d-book@v0.1.1/dist-embed/book.iife.js'
 const URL_KEYS = new Set(['coverImage', 'backImage'])
 
 const actions = {

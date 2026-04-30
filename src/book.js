@@ -40,7 +40,7 @@ export const DEFAULTS = {
   coverFinish: 'satin',
   coverTexture: 'smooth',
 
-  title: 'The Value Engine',
+  title: '',
   author: '',
   titleColor: '#e8e0c8',
   titleFont: 'Georgia, serif',
