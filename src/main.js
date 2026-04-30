@@ -17,10 +17,14 @@ const stored = loadStored()
 
 const uiState = {
   bgColor: '#0B1E23',
+  transparentBg: false,
   ...stored.ui,
 }
-const applyBg = (c) => { document.body.style.background = c }
-applyBg(uiState.bgColor)
+const CHECKER = 'repeating-conic-gradient(#222 0 25%, #2a2a2a 0 50%) 50% / 24px 24px'
+const applyBg = () => {
+  document.body.style.background = uiState.transparentBg ? CHECKER : uiState.bgColor
+}
+applyBg()
 
 const container = document.getElementById('book')
 const inst = mount(container, {
@@ -53,8 +57,12 @@ const u = (k) => (v) => inst.update({ [k]: v })
 const gui = new GUI({ title: 'Book Designer' })
 
 const view = gui.addFolder('View')
-view.addColor(uiState, 'bgColor').name('background').onChange(v => {
-  applyBg(v)
+view.add(uiState, 'transparentBg').name('transparent bg').onChange(() => {
+  applyBg()
+  saveStored()
+})
+view.addColor(uiState, 'bgColor').name('background').onChange(() => {
+  applyBg()
   saveStored()
 })
 
@@ -133,7 +141,8 @@ const actions = {
       if (URL_KEYS.has(k) && val.startsWith('/')) val = location.origin + val
       attrs.push(`data-book-${kebab(k)}="${val.replace(/"/g, '&quot;')}"`)
     }
-    const html = `<div\n  ${attrs.join('\n  ')}\n  style="width:100%;height:600px;background:${uiState.bgColor}"\n></div>\n<script src="${SCRIPT_URL}"></script>`
+    const bgStyle = uiState.transparentBg ? '' : `background:${uiState.bgColor};`
+    const html = `<div\n  ${attrs.join('\n  ')}\n  style="width:100%;height:600px;${bgStyle}"\n></div>\n<script src="${SCRIPT_URL}"></script>`
     console.log(html)
     navigator.clipboard?.writeText(html)
     alert('Embed snippet copied to clipboard (and logged to console)')
