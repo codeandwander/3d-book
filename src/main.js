@@ -120,17 +120,20 @@ interaction.add(cfg, 'autoRotate').onChange(u('autoRotate'))
 interaction.add(cfg, 'autoRotateSpeed', 0, 1, 0.01).onChange(u('autoRotateSpeed'))
 interaction.add(cfg, 'hoverTilt', 0, 0.5, 0.01).onChange(u('hoverTilt'))
 
+const SCRIPT_URL = 'https://cdn.jsdelivr.net/gh/codeandwander/3d-book@v0.1.0/dist-embed/book.iife.js'
+const URL_KEYS = new Set(['coverImage', 'backImage'])
+
 const actions = {
   exportEmbed() {
     const kebab = (k) => k.replace(/([A-Z])/g, '-$1').toLowerCase()
-    const skip = new Set(['coverImage'])
     const attrs = ['data-book-mount']
     for (const [k, v] of Object.entries(cfg)) {
       if (v == null || v === '') continue
-      if (skip.has(k) && !v) continue
-      attrs.push(`data-book-${kebab(k)}="${String(v).replace(/"/g, '&quot;')}"`)
+      let val = String(v)
+      if (URL_KEYS.has(k) && val.startsWith('/')) val = location.origin + val
+      attrs.push(`data-book-${kebab(k)}="${val.replace(/"/g, '&quot;')}"`)
     }
-    const html = `<div\n  ${attrs.join('\n  ')}\n  style="width:100%;height:600px;background:${uiState.bgColor}"\n></div>\n<script src="https://YOUR-CDN/book.iife.js"></script>`
+    const html = `<div\n  ${attrs.join('\n  ')}\n  style="width:100%;height:600px;background:${uiState.bgColor}"\n></div>\n<script src="${SCRIPT_URL}"></script>`
     console.log(html)
     navigator.clipboard?.writeText(html)
     alert('Embed snippet copied to clipboard (and logged to console)')
