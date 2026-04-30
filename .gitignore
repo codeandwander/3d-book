@@ -2,6 +2,8 @@ node_modules
 dist
 dist-embed/*
 !dist-embed/book.iife.js
+webflow/node_modules
+webflow/dist
 .DS_Store
 *.log
 .vercel
